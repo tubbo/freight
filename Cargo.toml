@@ -1,7 +1,11 @@
 [package]
 name = "freight"
-version = "0.1.0"
+description = "The package-oriented programming language."
+version = "0.0.1"
 edition = "2021"
+homepage = "https://tubbo.github.io/freight"
+repository = "https://github.com/tubbo/freight"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
