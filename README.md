@@ -3,7 +3,7 @@
 A package-oriented programming language.
 
 ```typescript
-import { print } from "https://github.com/tubbo/freight/lib/io"
+import { print } from "io"
 
 export package "hello" {
   export module World {
