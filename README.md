@@ -13,3 +13,7 @@ export package "hello" {
   }
 }
 ```
+
+```sh
+freight run "hello/World#hello_world()"
+```
