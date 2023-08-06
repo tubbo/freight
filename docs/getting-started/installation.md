@@ -1,6 +1,7 @@
 ---
 title: Installation
 layout: default
+parent: Getting Started
 ---
 
 # Installation

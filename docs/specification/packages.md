@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Packages
+parent: Language Specification
 ---
 
 # Packages
@@ -68,6 +69,42 @@ export package 'foo' {
     function do_something() {
       // ...
     }
+  }
+}
+```
+
+A module can also have its own collection of submodules:
+
+```typescript
+package 'foo' {
+  module Bar {
+    module Baz {
+      function hello() {
+        // ...
+      }
+    }
+  }
+}
+```
+
+Both packages and modules are separated in code and runtime notation with the
+`::` operator:
+
+```typescript
+package 'foo' {
+  function hello() {
+    Bar::Baz::hello()
+  }
+}
+```
+
+To refer to the current package/module scope absolutely, the `this` keyword
+can be used:
+
+```typescript
+package 'foo' {
+  function hello() {
+    this::Bar::Baz::hello()
   }
 }
 ```

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Types
+parent: Language Specification
 ---
 
 # Types

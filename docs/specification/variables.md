@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Variables
+parent: Language Specification
 ---
 
 # Variables
