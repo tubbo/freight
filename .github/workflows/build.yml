@@ -1,7 +1,9 @@
 name: Build
 on:
+  schedule:
+    - cron: "0 10 * * *"
   push:
-    branches: [main]
+    branches: ['**']
     tags: [v*]
   pull_request:
     branches: [main]
@@ -10,20 +12,24 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        target: []
+        target:
+          - x86_64-apple-darwin
+          - x86_64-unknown-linux-gnu
+          - x86_64-pc-windows-msvc
     steps:
       - uses: actions/checkout@v3
+      - run: rustup target add ${{ matrix.target }}
       - run: cargo build --release --target ${{ matrix.target }}
       - uses: actions/upload-artifact@v3
         with:
           name: freight-${{ github.ref_name }}-${{ matrix.target }}
           path: target/release
       - run: cargo publish --target ${{ matrix.target }}
-        if: github.ref_type == 'tag'
+        if: github.event_name != 'pull_request'
   release:
     runs-on: ubuntu-latest
     needs: [crate]
-    if: github.ref_type == 'tag'
+    if: github.ref_type != 'pull_request'
     steps:
       - uses: actions/download-artifact@v3
         with:
@@ -31,4 +37,4 @@ jobs:
       - uses: softprops/action-gh-release@v1
         with:
           generate_release_notes: true
-          files: dist/*.zip
+          files: dist/*
