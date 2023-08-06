@@ -4,3 +4,5 @@ target
 # Added by cargo
 
 /target
+/docs/_site
+/docs/.jekyll-cache
