@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 ---
 
 # The Freight Programming Language
@@ -24,11 +24,11 @@ on repositories for delivering such packages.
 Here's a simple "hello world" program in Freight:
 
 ```typescript
-package 'hello' {
-  module World {
-    function hello_world() {
-      global.print("hello, world!")
-    }
+import { IO } from "freight"
+
+export package "hello" {
+  export function world() {
+    IO.print_line("hello world")
   }
 }
 ```
@@ -37,6 +37,14 @@ To run this program, use `freight run` and specify the location of the function
 that is to be executed:
 
 ```sh
-$ freight run 'hello::World::hello_world()'
+$ freight run 'hello::world()'
+hello, world!
+```
+
+You can also compile the program to a binary, and run the built binary instead:
+
+```sh
+$ freight build 'hello::world()' ./hello-world
+$ ./hello-world
 hello, world!
 ```
