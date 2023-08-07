@@ -20,11 +20,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: rustup target add ${{ matrix.target }}
+      - run: cargo check --target ${{ matrix.target }}
+      - run: cargo test --target ${{ matrix.target }}
       - run: cargo build --release --target ${{ matrix.target }}
       - uses: actions/upload-artifact@v3
         with:
           name: freight-${{ github.ref_name }}-${{ matrix.target }}
-          path: target/release
+          path: target/release/freight
+      - run: cargo package --target ${{ matrix.target }}
       - run: cargo publish --target ${{ matrix.target }}
         if: github.ref_type == 'tag'
   image:
