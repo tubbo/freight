@@ -11,25 +11,21 @@ on:
 jobs:
   crate:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        target:
-          - x86_64-apple-darwin
-          - x86_64-unknown-linux-gnu
-          - x86_64-pc-windows-msvc
     steps:
       - uses: actions/checkout@v3
-      - run: rustup target add ${{ matrix.target }}
-      - run: cargo check --target ${{ matrix.target }}
-      - run: cargo test --target ${{ matrix.target }}
-      - run: cargo build --release --target ${{ matrix.target }}
+      - run: cargo check
+      - run: cargo build --release
+      - run: cargo test
+      - run: cargo bench
       - uses: actions/upload-artifact@v3
         with:
-          name: freight-${{ github.ref_name }}-${{ matrix.target }}
-          path: target/release/freight
-      - run: cargo package --target ${{ matrix.target }}
-      - run: cargo publish --target ${{ matrix.target }}
+          name: freight-${{ github.ref_name }}
+          path: target/release
+      - run: cargo package
+      - run: cargo publish
         if: github.ref_type == 'tag'
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_TOKEN }}
   image:
     runs-on: ubuntu-latest
     permissions:
