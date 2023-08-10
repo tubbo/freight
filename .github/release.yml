@@ -1,4 +1,7 @@
 changelog:
+  exclude:
+    labels:
+      - tooling
   categories:
     - title: Breaking Changes
       labels:
