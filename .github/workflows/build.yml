@@ -10,7 +10,12 @@ on:
     branches: [main]
 jobs:
   crate:
-    runs-on: ubuntu-latest
+    matrix:
+      os:
+        - ubuntu
+        - macos
+        - windows
+    runs-on: ${{ matrix.os }}-latest
     steps:
       - uses: actions/checkout@v3
       - run: cargo check
@@ -19,7 +24,7 @@ jobs:
       - run: cargo bench
       - uses: actions/upload-artifact@v3
         with:
-          name: freight-${{ github.ref_name }}
+          name: freight-${{ github.ref_name }}-${{ matrix.os }}
           path: target/release
       - run: cargo package
       - run: cargo publish
