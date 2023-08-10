@@ -10,8 +10,9 @@ on:
     branches: [main]
 jobs:
   crate:
-    matrix:
-      os:
+    strategy:
+      matrix:
+        os:
         - ubuntu
         - macos
         - windows
