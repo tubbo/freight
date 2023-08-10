@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [main]
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref_name }}
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 jobs:
   crate:
@@ -29,7 +29,7 @@ jobs:
       - run: cargo bench
       - uses: actions/upload-artifact@v3
         with:
-          name: freight-${{ github.ref_name }}-${{ matrix.os }}
+          name: freight-${{ github.head_ref || github.ref_name }}-${{ matrix.os }}
           path: target/release
       - run: cargo package
       - run: cargo publish
