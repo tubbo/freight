@@ -35,7 +35,7 @@ enum Commands {
     },
 
     /// Publish a package to the Freight registry.
-    Publish {
+    Ship {
         /// Name of the package to publish.
         package: String,
 
@@ -51,6 +51,6 @@ fn main() {
     match &cli.command {
         Commands::Build { path, file } => freight::build(path, file),
         Commands::Run { path } => freight::run(path),
-        Commands::Publish { package, version } => freight::publish(package, version),
+        Commands::Ship { package, version } => freight::ship(package, version),
     }
 }

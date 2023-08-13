@@ -12,6 +12,6 @@ pub fn run(path: &String) {
 }
 
 /// Publish a package to the Freight registry.
-pub fn publish(name: &String, version: &String) {
+pub fn ship(name: &String, version: &String) {
     println!("published package '{}' at {}", name, version);
 }
