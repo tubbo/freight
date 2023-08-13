@@ -14,15 +14,13 @@ your programs as they are being developed.
 
 The following types are available in all programs without needing to import:
 
-- `Integer`
-- `Float`
+- `Number`
 - `Boolean`
 - `String`
-- `Record<$KEY,$VALUE>`
 
 ## Structs
 
-You can create custom object types using the `struct` keyword:
+You can create custom product types using the `struct` keyword:
 
 ```typescript
 struct Foo {
@@ -35,6 +33,29 @@ This will allow you to instantiate objects of type `Foo`:
 ```typescript
 Foo { bar: 'foo bar' }
 ```
+
+## Enums
+
+Freight also supports sum types by use of the `enum` keyword:
+
+```typescript
+enum Result {
+  Ok(value: String)
+  Error
+}
+```
+
+This sum type can be evaluated by pattern matching:
+
+```typescript
+value = match fn_that_returns_result() {
+  Ok(value) => { "it worked!" }
+  Error(error) => { "error" }
+}
+```
+
+Sum types defined with `enum` allow functions to return different types of
+values depending on the execution.
 
 ## Type Arguments
 
@@ -51,4 +72,50 @@ You can now instantiate `Foo` with a custom type for `Foo.bar`:
 
 ```
 Foo<Integer> { bar: 1 }
+```
+
+## Abstract Types
+
+You can designate types, functions, and even entire modules as `abstract` to
+specify an interface to your library without writing dummy code.
+
+```typescript
+export package 'abstract' {
+  export module Foo {
+    abstract function Handler(input: String) -> Number
+
+    export function Server(handler: Handler) {
+      // compiler will assert that the function passed in implements `Handler`
+    }
+  }
+}
+```
+
+Abstract modules are somewhat special, in that they designate everything under
+their scope to be abstract if they are themselves abstract:
+
+```typescript
+export package 'abstract' {
+  export abstract module Bar {
+    // you don't need the `abstract` keyword for this function
+    function Handler(input: String) -> Integer
+  }
+}
+```
+
+As such, modules cannot "know" if they are implementing a given interface, so
+you can "teach" the compiler that a module should be implementing an abstract
+module by using the `implements` keyword:
+
+```typescript
+export package 'abstract' {
+  export abstract module Interface {
+    function send(message: String) -> Boolean
+    function receive() -> String
+  }
+
+  export module Concrete implements Interface {
+    // this will error if exportable send/receive implementations do not exist.
+  }
+}
 ```

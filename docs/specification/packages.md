@@ -31,6 +31,19 @@ system of Freight. Similar to Python or JavaScript, these keywords specify the
 modules you wish to import and the code that should be available outside of its
 package, respectively.
 
+There are 2 parts to an `import` statement:
+
+```typescript
+import Product from 'source' [@ vConstraint]
+```
+
+1. The **product** of the import, which is the first thing mentioned. This is
+   what will be used in your codebase to refer to what is being imported.
+2. The **source** of the import, which is everything after the `from` keyword.
+   Package sources are either a URL to the package's relative location, or just
+   the name of the package. In the latter case, packages will be looked up in
+   all sources specified in your configuration.
+
 You can import a module like so:
 
 ```typescript
@@ -47,64 +60,47 @@ export package 'foo' {
 }
 ```
 
-## Modules
-
-A module is a collection of functions and/or structs that correspond to the
-same concept. Modules are a way of organizing project code, and should be used
-prior to refactoring code into separate packages, as modules within the same
-package are all accessible to each other without needing to export. Modules
-are specified using `PascalCase`, and they can be nested within each other
-to form "sub-modules". It should be noted that sub-modules of exported
-modules must also be exported themselves:
+Entire packages can be imported as well:
 
 ```typescript
-export package 'foo' {
-  export module Bar {
-    export function hello() {
-      Priv.do_something()
-    }
-  }
-  module Priv {
-    // this code is not accessible to users of `foo`
-    function do_something() {
-      // ...
-    }
-  }
-}
+import foo from 'foo'
 ```
 
-A module can also have its own collection of submodules:
+## Versioning
+
+By default, Freight will use the latest version of each package you import. To
+control this behavior, you can specify a version constraint in the identifier:
 
 ```typescript
-package 'foo' {
-  module Bar {
-    module Baz {
-      function hello() {
-        // ...
-      }
-    }
-  }
-}
+import legacy from 'foo' @ v1.0.0
 ```
 
-Both packages and modules are separated in code and runtime notation with the
-`::` operator:
+This behavior is also extended to self-hosted package bundles:
 
 ```typescript
-package 'foo' {
-  function hello() {
-    Bar::Baz::hello()
-  }
-}
+import pkg from 'https://example.com/pkg' @ v1.0.0
 ```
 
-To refer to the current package/module scope absolutely, the `this` keyword
-can be used:
+Version constraints do not have to be an exact specification. They can also
+specify partial versions, which will be expanded into the latest version that
+matches the constraint:
 
 ```typescript
-package 'foo' {
-  function hello() {
-    this::Bar::Baz::hello()
-  }
-}
+import legacy from 'foo' @ v1.x
 ```
+
+These partial version specifiers are as follows:
+
+- **`vN.N.N`:** Match the exact specified version.
+- **`vN.N.x`:** Match the specified minor version, but use the latest patch.
+- **`vN.x`:** Match the specified major version, but use the latest minor.
+
+## Publishing
+
+Freight can resolve package names
+
+Freight implements a mostly decentralized model for resolving 3rd-party
+package names.
+
+Packages are published to a registry, which is a directory of `.zip` files
+containing all hosted package code.
