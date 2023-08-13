@@ -13,33 +13,67 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 jobs:
-  crate:
+  test:
     strategy:
       matrix:
         os:
-        - ubuntu
-        - macos
-        - windows
-    runs-on: ${{ matrix.os }}-latest
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - uses: Swatinem/rust-cache@v2
-      - run: cargo build --release
+      - run: cargo check
       - run: cargo test
       - run: cargo bench
       - run: cargo fmt --check
       - run: cargo clippy
+  crate:
+    needs: [test]
+    strategy:
+      matrix:
+        includes:
+          # linux
+          - build: x86_64-linux
+            runner: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - build: aarch64-linux
+            runner: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+          - build: riscv64-linux
+            runner: ubuntu-latest
+            target: riscv64gc-unknown-linux-gnu
+          # macos
+          - build: x86_64-macos
+            runner: macos-latest
+            target: x86_64-apple-darwin
+          - build: aarch64-macos
+            runner: macos-latest
+            target: aarch64-apple-darwin
+          # windows
+          - build: x86_64-windows
+            runner: windows-latest
+            target: x86_64-pc-windows-msvc
+    runs-on: ${{ matrix.runner }}
+    env:
+      CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+      - run: rustup target add ${{ matrix.target }}
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --release --target ${{ matrix.target }}
       - uses: actions/upload-artifact@v3
         with:
-          name: freight-${{ github.head_ref || github.ref_name }}-${{ matrix.os }}
-          path: target/release
-      - run: cargo package
-      - run: cargo publish
-        if: github.ref_type == 'tag'
-        env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_TOKEN }}
+          name: freight-${{ github.head_ref || github.ref_name }}-${{ matrix.build }}
+          path: |
+            target/release/freight
+            README.md
+      - if: github.ref_type == 'tag'
+        run: cargo publish
   image:
     runs-on: ubuntu-latest
+    needs: [test]
     permissions:
       packages: write
     steps:
