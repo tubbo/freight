@@ -33,6 +33,13 @@ jobs:
     needs: [test]
     strategy:
       matrix:
+        build:
+          - x86_64-linux
+          - aarch64-linux
+          - riscv64-linux
+          - x86_64-macos
+          - aarch64-macos
+          - x86_64-windows
         includes:
           # linux
           - build: x86_64-linux
