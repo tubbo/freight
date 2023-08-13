@@ -1,4 +1,4 @@
-use clap::{Parser,Subcommand};
+use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 
 /// Command-line interface to the Freight toolchain.
@@ -44,7 +44,6 @@ enum Commands {
         version: String,
     },
 }
-
 
 fn main() {
     let cli = Cli::parse();
