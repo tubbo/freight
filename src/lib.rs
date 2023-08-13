@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
 /// Build the given code path to a binary file on disk.
+#[allow(clippy::ptr_arg)]
 pub fn build(path: &String, file: &PathBuf) {
     println!("built '{}' to {}", path, file.display());
 }
