@@ -50,3 +50,10 @@ $ freight build 'hello::world()' ./hello-world
 $ ./hello-world
 hello, world!
 ```
+
+If you're making a library that is designed to be consumed by other programs,
+you can publish your package to a registry:
+
+```sh
+$ freight ship 'hello' 'v1.0.0'
+```
