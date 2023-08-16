@@ -31,7 +31,7 @@ struct Foo {
 This will allow you to instantiate objects of type `Foo`:
 
 ```typescript
-Foo { bar: 'foo bar' }
+new Foo { bar = 'foo bar' }
 ```
 
 ## Enums
@@ -40,7 +40,7 @@ Freight also supports sum types by use of the `enum` keyword:
 
 ```typescript
 enum Result {
-  Ok(value: String)
+  Ok { value: String },
   Error
 }
 ```
@@ -48,6 +48,14 @@ enum Result {
 This sum type can be evaluated by pattern matching:
 
 ```typescript
+function fn_that_returns_result() -> Result {
+  if (!valid()) {
+    new Result::Error
+  } else {
+    new Result::Ok { value = "foo" }
+  }
+}
+
 value = match fn_that_returns_result() {
   Ok(value) => { "it worked!" }
   Error(error) => { "error" }
@@ -68,10 +76,10 @@ struct Foo<Bar = String> {
 }
 ```
 
-You can now instantiate `Foo` with a custom type for `Foo.bar`:
+You can now instantiate `Foo` with a custom type for `.bar`:
 
 ```
-Foo<Integer> { bar: 1 }
+foo = new Foo<Integer> { bar: 1 }
 ```
 
 ## Abstract Types
@@ -110,7 +118,7 @@ module by using the `implements` keyword:
 ```typescript
 export package 'abstract' {
   export abstract module Interface {
-    function send(message: String) -> Boolean
+    function send(message: Message) -> Boolean
     function receive() -> String
   }
 
