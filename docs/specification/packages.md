@@ -22,7 +22,8 @@ package 'foo' {
 
 You can specify `package 'foo' { ... }` in any number of files, and they will
 all be collected together as part of the same codebase. A single project (or
-working directory) can have any number of packages as is desired.
+working directory) can have any number of packages as is desired. All code
+must be contained within a package, however.
 
 ## Imports and Exports
 
@@ -47,7 +48,9 @@ import Product from 'source' [@ vConstraint]
 You can import a module like so:
 
 ```typescript
-import { Bar } from 'foo'
+package 'app' {
+  import { Bar } from 'foo'
+}
 ```
 
 And export code like this:
@@ -93,7 +96,12 @@ These partial version specifiers are as follows:
 
 - **`vN.N.N`:** Match the exact specified version.
 - **`vN.N.x`:** Match the specified minor version, but use the latest patch.
-- **`vN.x`:** Match the specified major version, but use the latest minor.
+- **`vN.x`:** Match the specified major version, but use the latest minor (and patch).
+
+Versions only need to be specified once. Freight will use the "most specific"
+version constraint in your project to determine which version should be used.
+A local cache and lockfile is also available for your project so dependencies
+don't need to be re-fetched, and your versions stay the same across builds.
 
 ## Publishing
 
