@@ -66,7 +66,7 @@ export package 'foo' {
 Entire packages can be imported as well:
 
 ```typescript
-import foo from 'foo'
+import foo from 'foo';
 ```
 
 ## Versioning

@@ -2,7 +2,7 @@ name: Build
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 10 * * *"
+    - cron: '0 10 * * *'
   push:
     branches: ['**']
     tags: [v*]
@@ -151,7 +151,7 @@ jobs:
         with:
           path: build
       - if: github.ref_name == 'main' || github.ref_type == 'tag'
-        uses: actions/deploy-pages@v2   
+        uses: actions/deploy-pages@v2
   release:
     runs-on: ubuntu-latest
     needs: [crate, image, docs]
@@ -182,4 +182,3 @@ jobs:
           target_darwin_arm64: true
           target_linux_amd64: true
           target_linux_arm64: true
-
