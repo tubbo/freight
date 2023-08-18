@@ -1,20 +1,22 @@
-use clap::{Parser, Subcommand};
-use std::path::PathBuf;
+use clap::{error::Result, Error, Parser, Subcommand};
+use freight::project;
+use std::{env::current_dir, path::PathBuf};
 
-/// Command-line interface to the Freight toolchain.
+/// Freight - The package-oriented programming language.
+///
+/// This is the command-line interface to the Freight toolchain, enabling usage
+/// of the compiler, build tooling, and packaging infrastructure.
+///
+/// For more information, visit https://freight-lang.org/
 #[derive(Debug, Parser)]
-#[command(author, version, about, long_about = None)]
+#[command(author, version, long_about)]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
 
+    /// Root directory of the Freight project. (default: current directory)
     #[arg(short, long)]
-    /// Show all messages from compiler output.
-    verbose: bool,
-
-    #[arg(short, long)]
-    /// Only show error messages from compiler output.
-    quiet: bool,
+    root: Option<PathBuf>,
 }
 
 #[derive(Debug, Subcommand)]
@@ -45,12 +47,16 @@ enum Commands {
     },
 }
 
-fn main() {
+fn main() -> Result<(), Error> {
     let cli = Cli::parse();
+    let project = match &cli.root {
+        Some(root) => project::init(&root),
+        None => project::init(&current_dir()?),
+    };
 
     match &cli.command {
-        Commands::Build { path, file } => freight::build(path, file),
-        Commands::Run { path } => freight::run(path),
-        Commands::Ship { package, version } => freight::ship(package, version),
+        Commands::Build { path, file } => project.build(path, file),
+        Commands::Run { path } => project.run(path),
+        Commands::Ship { package, version } => project.ship(package, version),
     }
 }

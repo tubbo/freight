@@ -1,6 +1,6 @@
 export package "freight" {
   export module IO {
-    export function print(output: string) {
+    export function print(output: String) {
       // TODO
     }
   }
