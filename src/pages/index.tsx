@@ -4,6 +4,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import Head from '@docusaurus/Head';
 
 import styles from './index.module.css';
 
@@ -29,9 +30,12 @@ function HomepageHeader() {
 }
 
 export default function Home(): JSX.Element {
-  const { siteConfig } = useDocusaurusContext();
+  // const { siteConfig } = useDocusaurusContext();
   return (
-    <Layout title={siteConfig.title} description={siteConfig.tagline}>
+    <Layout>
+      <Head>
+        <title>Freight - The Package-Oriented Programming Language</title>
+      </Head>
       <HomepageHeader />
       <main>
         <HomepageFeatures />
