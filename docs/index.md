@@ -1,5 +1,7 @@
 ---
-title: Introduction
+title: Docs
+sidebar_label: Home
+sidebar_position: 0
 ---
 
 # The Freight Programming Language
