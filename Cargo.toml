@@ -11,6 +11,7 @@ license = "MIT"
 
 [dependencies]
 clap = { version = "4.3.21", features = ["derive"] }
+glob = "0.3.1"
 lalrpop-util = "0.20.0"
 
 [build-dependencies]
