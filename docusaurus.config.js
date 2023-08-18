@@ -35,7 +35,6 @@ const config = {
       },
     ],
   ],
-
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     {
@@ -64,14 +63,14 @@ const config = {
           {
             title: 'Docs',
             items: [
-              {
-                label: 'Getting Started',
-                to: '/docs/getting-started',
-              },
-              {
-                label: 'Language Reference',
-                to: '/docs/reference',
-              },
+              // {
+              //   label: 'Getting Started',
+              //   to: '/docs/getting-started',
+              // },
+              // {
+              //   label: 'Language Reference',
+              //   to: '/docs/reference',
+              // },
             ],
           },
           {
@@ -85,18 +84,22 @@ const config = {
                 label: 'Issue Tracker',
                 href: 'https://github.com/tubbo/freight/issues',
               },
+              {
+                label: 'Source Code',
+                href: 'https://github.com/tubbo/freight',
+              },
             ],
           },
           {
             title: 'More',
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
+                label: 'About',
+                to: '/about',
               },
               {
-                label: 'GitHub',
-                href: 'https://github.com/tubbo/freight',
+                label: 'Blog',
+                to: '/blog',
               },
             ],
           },
