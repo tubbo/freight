@@ -45,14 +45,7 @@ jobs:
     needs: [lint, test]
     strategy:
       matrix:
-        build:
-          - linux-amd64
-          - linux-arm64
-          - linux-riscv64
-          - darwin-amd64
-          - darwin-arm64
-          - windows-amd64
-        includes:
+        include:
           # linux
           - build: linux-amd64
             runner: ubuntu-latest
