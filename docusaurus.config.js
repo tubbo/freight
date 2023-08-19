@@ -8,8 +8,8 @@ const config = {
   title: 'Freight',
   tagline: 'The package-oriented programming language.',
   favicon: 'img/favicon.ico',
-  url: 'https://freight-lang.org',
-  baseUrl: '/',
+  url: 'https://tubbo.github.io',
+  baseUrl: '/freight',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   i18n: {
