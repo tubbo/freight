@@ -5,5 +5,7 @@
     ":semanticCommitsDisabled",
     ":automergeAll",
     ":automergeBranch"
-  ]
+  ],
+  "branchPrefix": "renovate-",
+  "branchPrefixOld": "renovate/"
 }
