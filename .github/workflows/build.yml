@@ -44,8 +44,8 @@ jobs:
   crate:
     needs: [lint, test]
     strategy:
+      fail-fast: false
       matrix:
-        fail-fast: false
         include:
           # linux
           - build: linux-amd64
