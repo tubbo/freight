@@ -146,6 +146,10 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      contents: read
+      id-token: write
     steps:
       - uses: actions/deploy-pages@v2
         id: deployment
