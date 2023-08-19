@@ -1,53 +1,10 @@
 ---
-layout: default
-title: Packages
+layout: page
+title: Modules
 parent: Language Specification
 ---
 
-# Packages
-
-All Freight code is organized into **packages**. A package is any unit of code
-that is collected together within a set of files. Unlike most compilers,
-Freight doesn't consider files as a "boundary". Instead, it collects all files
-in the current directory together, and uses the `package` and `module` keywords
-within the source to form the boundaries that a programmer specifies.
-
-A package is defined using the `package` keyword, and the name of the package:
-
-```typescript
-package 'foo' {
-  // your code here
-}
-```
-
-You can specify `package 'foo' { ... }` in any number of files, and they will
-all be collected together as part of the same codebase. A single project (or
-working directory) can have any number of packages as is desired.
-
-## Imports and Exports
-
-The `import` and `export` keywords are crucial to understanding the packaging
-system of Freight. Similar to Python or JavaScript, these keywords specify the
-modules you wish to import and the code that should be available outside of its
-package, respectively.
-
-You can import a module like so:
-
-```typescript
-import { Bar } from 'foo'
-```
-
-And export code like this:
-
-```typescript
-export package 'foo' {
-  export module Bar {
-    // your code here
-  }
-}
-```
-
-## Modules
+# Modules
 
 A module is a collection of functions and/or structs that correspond to the
 same concept. Modules are a way of organizing project code, and should be used
@@ -107,4 +64,5 @@ package 'foo' {
     this::Bar::Baz::hello()
   }
 }
+`
 ```

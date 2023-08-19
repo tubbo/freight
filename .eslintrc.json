@@ -1,0 +1,10 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "jest": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": ["plugin:@docusaurus/recommended"]
+}
