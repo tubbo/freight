@@ -45,6 +45,7 @@ jobs:
     needs: [lint, test]
     strategy:
       matrix:
+        fail-fast: false
         include:
           # linux
           - build: linux-amd64
