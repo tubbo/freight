@@ -1,3 +1,4 @@
+use crate::barge;
 use clap::{error::Result, Error};
 use glob::glob;
 use std::{fs::read_to_string, path::PathBuf};
@@ -42,9 +43,29 @@ impl Project {
         Ok(())
     }
 
-    /// Publish a package to the Freight registry.
-    pub fn ship(&self, name: &String, version: &String) -> Result<(), Error> {
-        println!("published package '{}' at {}", name, version);
+    /// Publish the packages in this project. By default, this collects all
+    /// exported packages in the project, compiles them to package distributions,
+    /// and then generates a repository for the project that can be deployed to
+    /// any static host.
+    pub fn ship(
+        &self,
+        version: &String,
+        includes: &Option<Vec<String>>,
+        output: &PathBuf,
+    ) -> Result<(), Error> {
+        let mut barge = barge::open(output);
+        let packages: Vec<String> = vec![];
+
+        for package in packages {
+            barge.load(package, version, &PathBuf::new());
+        }
+
+        barge.sail()?;
+        println!(
+            "published {:?} at version {:?} to {:?}",
+            includes, version, output,
+        );
+
         Ok(())
     }
 }

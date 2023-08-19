@@ -9,7 +9,7 @@ use std::{env::current_dir, path::PathBuf};
 ///
 /// For more information, visit https://freight-lang.org/
 #[derive(Debug, Parser)]
-#[command(author, version, long_about)]
+#[command(author, version, long_about, max_term_width = 80)]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
@@ -30,20 +30,31 @@ enum Commands {
         file: PathBuf,
     },
 
-    /// Compile a code path from your project and run it immediately.
+    /// Compile and immediately run code in your project.
     Run {
         /// A code path to compile, like 'foo::Bar.baz()'.
         path: String,
     },
 
-    /// Publish a package to the Freight registry.
+    /// Publish this project's packages.
+    ///
+    /// This command publishes the exportable packages in your project, first
+    /// by compiling said packages into distributable tarballs, and then
+    /// generating both an index for the package repository as well as a set of
+    /// documentation pages for your project's packages. This artifact can then
+    /// be uploaded to any static hosting service, such as GitHub Pages, for
+    /// publishing both your project's codebase and its documentation.
     Ship {
-        /// Name of the package to publish.
-        package: String,
-
-        /// Version of the package to publish. This must be unique, or you will
-        /// receive an error from the registry.
+        /// Version of the package(s) to publish.
         version: String,
+
+        /// Optional short list of packages to publish.
+        #[arg(short, long)]
+        packages: Option<Vec<String>>,
+
+        /// Directory to output files to.
+        #[arg(short, long, default_value = "./docs")]
+        output: PathBuf,
     },
 }
 
@@ -57,6 +68,10 @@ fn main() -> Result<(), Error> {
     match &cli.command {
         Commands::Build { path, file } => project.build(path, file),
         Commands::Run { path } => project.run(path),
-        Commands::Ship { package, version } => project.ship(package, version),
+        Commands::Ship {
+            version,
+            packages,
+            output,
+        } => project.ship(version, packages, output),
     }
 }
