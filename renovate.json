@@ -9,6 +9,5 @@
     ":timezone(America/New_York)",
     "npm:unpublishSafe"
   ],
-  "branchPrefix": "renovate-",
-  "branchPrefixOld": "renovate/"
+  "branchPrefix": "renovate-"
 }
