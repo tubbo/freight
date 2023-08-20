@@ -42,6 +42,11 @@ impl Project {
         println!("running '{}'", path);
         Ok(())
     }
+    
+    /// Compile a package in this project and store it in the cache.
+    pub fn pack(&self, name: String) -> Result<(), Error> {
+        Ok(())
+    }
 
     /// Publish the packages in this project. By default, this collects all
     /// exported packages in the project, compiles them to package distributions,
@@ -53,19 +58,23 @@ impl Project {
         includes: &Option<Vec<String>>,
         output: &PathBuf,
     ) -> Result<(), Error> {
-        let mut barge = barge::open(output);
-        let packages: Vec<String> = vec![];
-
+        let packages = match includes {
+            Some(specified) => specified,
+            None => vec![],
+        };
+        
         for package in packages {
-            barge.load(package, version, &PathBuf::new());
+            &self.pack(package)?;
         }
 
-        barge.sail()?;
+        barge::ship(packages, version, output)?;
         println!(
-            "published {:?} at version {:?} to {:?}",
-            includes, version, output,
+            "published {:?} at {:?} to {:?}",
+            packages,
+            version,
+            output
         );
-
+        
         Ok(())
     }
 }
