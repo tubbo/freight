@@ -132,8 +132,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           cache: yarn
+      - run: cargo rustdoc
+      - run: mv target/doc static/crates
       - run: yarn
-      - run: cargo doc
       - run: yarn build
       - uses: actions/upload-pages-artifact@v2
         with:

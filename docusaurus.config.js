@@ -16,7 +16,6 @@ const config = {
     defaultLocale: 'en',
     locales: ['en'],
   },
-  staticDirectories: ['static', 'target'],
   presets: [
     [
       'classic',
