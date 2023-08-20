@@ -4,12 +4,15 @@ changelog:
       - tooling
   categories:
     - title: Breaking Changes
+      bump: major
       labels:
         - breaking
     - title: New Features
+      bump: minor
       labels:
         - enhancement
     - title: Bug Fixes and Improvements
+      bump: patch
       labels:
         - bug
     - title: Documentation Changes

@@ -1,0 +1,88 @@
+name: Version
+on:
+  workflow_dispatch:
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - run: git config user.name ${{ github.actor }}
+      - run: git config user.email ${{ github.actor }}@users.noreply.github.com
+      - uses: actions/setup-node@v3
+      - run: npm install js-yaml
+      - uses: actions/github-script@v3
+        name: Find Version Bump
+        id: bump
+        with:
+          script: |
+            const yaml = require('js-yaml');
+            const { readFile } = require('fs/promises');
+
+            const BUMPS = ['patch', 'minor', 'major'];
+            const RELEASE_QUERY = `
+              query LatestRelease($owner: String!, $repo: String!) {
+                repository(owner: $owner, name: $repo) {
+                  releases(first: 1) {
+                    nodes {
+                      createdAt
+                    }
+                  }
+                }
+              }
+            `;
+            const PRS_QUERY = `
+              query UnreleasedPullRequests($query: String!) {
+                search(query: $query, type: PULL_REQUEST) {
+                  nodes {
+                    ... on PullRequest {
+                      labels {
+                        nodes {
+                          name
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `;
+
+            const config = await readFile('.github/release.yml', 'utf-8');
+            const { changelog } = yaml.load(config);
+            const { owner, repo } = context.repo;
+            const { repository: { releases: { nodes: [release] } } } =
+              await github.graphql(RELEASE_QUERY, { owner, repo });
+
+            let bump = '';
+            let query = `repo:${owner}/${repo} is:pr is:merged`;
+
+            if (release) {
+              query += ` created:>${release.createdAt}`
+            }
+
+            const { search: { nodes: pulls } } = await github.graphql(PRS_QUERY, { query });
+
+            for (const { labels: { nodes: labels } } of pulls) {
+              for (const label of labels) {
+                if (!changelog.exclude.labels.includes(label.name)) {
+                  for (const category of changelog.categories) {
+                    if (
+                      category.bump &&
+                      category.labels.include(label.name) &&
+                      BUMPS.indexOf(category.bump) > BUMPS.indexOf(bump)
+                    ) {
+                        bump = category.bump;
+                    }
+                  }
+                }
+              }
+            }
+
+            return bump;
+      - if: steps.bump.outputs.result != ''
+        run: cargo install cargo-bump
+      - if: steps.bump.outputs.result != ''
+        run: cargo bump ${{ steps.bump.outputs.result }} --git-tag
+      - if: steps.bump.outputs.result != ''
+        run: git push --follow-tags
