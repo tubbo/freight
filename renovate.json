@@ -4,7 +4,10 @@
     "config:base",
     ":semanticCommitsDisabled",
     ":automergeAll",
-    ":automergeBranch"
+    ":automergeBranch",
+    ":label(dependencies)",
+    ":timezone(America/New_York)",
+    "npm:unpublishSafe"
   ],
   "branchPrefix": "renovate-",
   "branchPrefixOld": "renovate/"
