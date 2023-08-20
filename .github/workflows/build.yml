@@ -135,9 +135,8 @@ jobs:
         with:
           cache: yarn
       - run: yarn
-      - run: yarn build
       - run: cargo doc
-      - run: mv target/doc build/lib
+      - run: yarn build
       - uses: actions/upload-pages-artifact@v2
         with:
           path: build
