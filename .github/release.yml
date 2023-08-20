@@ -12,9 +12,12 @@ changelog:
     - title: Bug Fixes and Improvements
       labels:
         - bug
-    - title: Documentation Updates
+    - title: Documentation Changes
       labels:
         - documentation
+    - title: Dependency Updates
+      labels:
+        - dependencies
     - title: Other Changes
       labels:
         - '*'
