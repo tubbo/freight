@@ -41,36 +41,30 @@ impl PartialEq for BargeConfig {
     }
 }
 
-/// Find global configuration from the XDG base directory in `~/.config/freight/config.toml`.
-fn global() -> Result<Config, Error> {
-    let xdg = BaseDirectories::with_prefix("freight")?;
-    let path = xdg.place_config_file("config.toml")?;
-    let source = read_to_string(path)?;
-
-    toml::from_str(&source)
-}
-
 /// Find project configuration from the local root directory in `freight.toml`
-fn local(path: &PathBuf) -> Result<Config, Error> {
-    path.push("freight.toml");
-
+fn read(path: &PathBuf) -> Option<Config> {
     let source = read_to_string(path)?;
-
-    toml::from_str(&source)
-}
-
-/// Find overrides in environment variables with the `$FREIGHT_` prefix.
-fn env() -> Result<Config, Error> {
-    envy::prefixed("FREIGHT_").from_env::<Config>()
+    let config: Config = config.parse()?;
+    
+    Ok(config)
 }
 
 /// Initialize the Freight configuration by merging together its sources.
 pub fn init(root: &PathBuf) -> Result<Config, Error> {
     let config = Config::default();
-
-    config.merge(global());
-    config.merge(local(root));
-    config.merge(env());
+    let xdg = BaseDirectories::with_prefix("freight").place_config_path("config.toml")?;
+    
+    if let Some(global) = read(xdg) {
+        config.merge(global);
+    }
+    
+    if let Some(local) = read(root.join("freight.toml")) {
+        config.merge(local);
+    }
+    
+    if let Ok(env) = envy::prefixed("FREIGHT_").from_env::<Config>() {
+        config.merge(env);
+    }
 
     Ok(config)
 }
