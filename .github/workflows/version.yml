@@ -13,7 +13,6 @@ jobs:
       - uses: actions/setup-node@v3
       - run: npm install js-yaml
       - uses: actions/github-script@v3
-        name: Find Version Bump
         id: bump
         with:
           script: |
