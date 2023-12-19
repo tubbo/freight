@@ -136,7 +136,7 @@ jobs:
       - run: mv target/doc static/crates
       - run: yarn
       - run: yarn build
-      - uses: actions/upload-pages-artifact@v2
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: build
   deploy:
