@@ -151,7 +151,7 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/deploy-pages@v3
+      - uses: actions/deploy-pages@v4
         id: deployment
   release:
     runs-on: ubuntu-latest
