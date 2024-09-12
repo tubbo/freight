@@ -14,4 +14,4 @@ clap = { version = "4.5.4", features = ["derive"] }
 lalrpop-util = "0.21.0"
 
 [build-dependencies]
-lalrpop = "0.20.1"
+lalrpop = "0.21.0"
