@@ -168,7 +168,7 @@ jobs:
           generate_release_notes: true
           files: dist/*
       - if: github.ref_type == 'tag'
-        uses: Justintime50/homebrew-releaser@v1
+        uses: Justintime50/homebrew-releaser@v2
         with:
           homebrew_owner: tubbo
           homebrew_tap: freight
