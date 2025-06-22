@@ -2706,9 +2706,9 @@
     tslib "^2.6.0"
 
 "@docusaurus/eslint-plugin@^3.0.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@docusaurus/eslint-plugin/-/eslint-plugin-3.8.0.tgz#bf7f9210948652e975a6ae9c124e333d0c9c6c41"
-  integrity sha512-R3LAB6vcmO92FsiDQBTUBO4+9GZ8OHavRLZ7HqHxma0ayuBbfXrI9d70/3bZwyxl4y9xXy810rem3FkL6UdD9A==
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/@docusaurus/eslint-plugin/-/eslint-plugin-3.8.1.tgz#8ac9341e8bb119183cb0cf94414fa3001e685009"
+  integrity sha512-moiMzNuUpWaIcoEqZP4FzFGk4j8Gg/fYJYc9lpTWZplsy4GswGZw150rPuFcZ1lW65kuKVeGqu/E60JG37AX5Q==
   dependencies:
     "@typescript-eslint/utils" "^5.62.0"
     tslib "^2.6.0"
